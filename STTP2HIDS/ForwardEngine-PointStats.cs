@@ -43,7 +43,7 @@ namespace STTP2HIDS
             public bool Update(Measurement measurement)
             {
                 double value = measurement.Value;
-                DateTime timestamp = measurement.GetDateTime();
+                DateTime timestamp = new DateTime(measurement.Timestamp, DateTimeKind.Utc);
 
                 if (StartTimestamp == default)
                     StartTimestamp = timestamp;
