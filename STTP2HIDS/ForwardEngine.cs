@@ -23,11 +23,13 @@
 
 using Gemstone;
 using Gemstone.Collections.CollectionExtensions;
+using Gemstone.IO;
 using HIDS;
 using sttp;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace STTP2HIDS
 {
@@ -61,6 +63,8 @@ namespace STTP2HIDS
                 startMessage.AppendLine();
                 startMessage.AppendLine($"Establishing forward to InfluxDB HIDS \"{s_settings.InfluxDBEndPoint}\" from STTP data received from \"{s_settings.STTPEndPoint}\":");
                 startMessage.AppendLine();
+                startMessage.AppendLine($"   Current EXE Path: {FilePath.HostApplicationPath}");
+                startMessage.AppendLine($"     Using Read Key: {s_settings.UseReadKey}");
                 startMessage.AppendLine($"        Window Size: {s_settings.WindowSize:N0}ms");
                 startMessage.AppendLine($"           Token ID: {s_settings.TokenID}");
                 startMessage.AppendLine($"       Point Bucket: {s_settings.PointBucket}");
@@ -76,8 +80,11 @@ namespace STTP2HIDS
                 using PointQueue pointQueue = CreatePointQueue();
                 using API hidsAPI = ConnectHIDSClient();
                 using SubscriberHandler subscriber = ConnectSTTPClient();
-               
-                Console.ReadKey();
+
+                if (s_settings.UseReadKey)
+                    Console.ReadKey();
+                else
+                    Thread.Sleep(Timeout.Infinite);
 
                 subscriber.Disconnect();
                 hidsAPI.Disconnect();
@@ -120,6 +127,7 @@ namespace STTP2HIDS
 
             SubscriberHandler subscriberHandler = new SubscriberHandler
             {
+                DisplayInterval = s_displayInterval,
                 HandleStatusMessage = StatusMessage,
                 HandleErrorMessage = ErrorMessage,
                 HandleReceivedMetadata = HandleReceivedMetadata,

@@ -47,6 +47,7 @@ namespace STTP2HIDS
         public const string STTPSection = "STTP";
 
         // Root application default settings
+        public const bool DefaultUseReadKey = true;
         public const int DefaultWindowSize = 5000;
 
         // InfluxDB default settings
@@ -62,6 +63,7 @@ namespace STTP2HIDS
         public string? InfluxDBEndPoint;
 
         // Optional settings (defaults from config file)
+        public bool UseReadKey { get; set; }
         public int WindowSize { get; set; }
         public string TokenID { get; set; }
         public string PointBucket { get; set; }
@@ -70,6 +72,7 @@ namespace STTP2HIDS
 
         public Settings(IConfiguration configuration)
         {
+            UseReadKey = bool.Parse(configuration[nameof(UseReadKey)]);
             WindowSize = int.Parse(configuration[nameof(WindowSize)]);
 
             IConfigurationSection influxDBSettings = configuration.GetSection(InfluxDBSection);
@@ -84,6 +87,7 @@ namespace STTP2HIDS
         public static void ConfigureAppSettings(IAppSettingsBuilder builder)
         {
             // Root configuration settings
+            builder.Add($"{nameof(UseReadKey)}", DefaultUseReadKey.ToString(), "Defines the flag that determines if console uses read key to pause application.");
             builder.Add($"{nameof(WindowSize)}", DefaultWindowSize.ToString(), "Defines the window size, in milliseconds, overwhich to calculate min, max and avg statistics for HIDS InfluxDB target.");
 
             // InfluxDB configuration settings
@@ -101,6 +105,7 @@ namespace STTP2HIDS
             [$"--{nameof(PointBucket)}"] = $"{InfluxDBSection}:{nameof(PointBucket)}",
             [$"--{nameof(OrganizationID)}"] = $"{InfluxDBSection}:{nameof(OrganizationID)}",
             [$"--{nameof(FilterExpression)}"] = $"{STTPSection}:{nameof(FilterExpression)}",
+            ["-r"] = nameof(UseReadKey),
             ["-w"] = nameof(WindowSize),
             ["-t"] = $"{InfluxDBSection}:{nameof(TokenID)}",
             ["-p"] = $"{InfluxDBSection}:{nameof(PointBucket)}",
@@ -173,6 +178,7 @@ namespace STTP2HIDS
             Console.WriteLine($"    {nameof(STTP2HIDS)} [options] sttpHost:sttpPort influxHost:influxPort");
             Console.WriteLine();
             Console.WriteLine("OPTIONS:");
+            Console.WriteLine($"  -r, --{nameof(UseReadKey)}        Defines the flag that determines if console uses read key to pause application");
             Console.WriteLine($"  -w, --{nameof(WindowSize)}        Defines the window size, in milliseconds, overwhich to calculate statistics");
             Console.WriteLine($"  -t, --{nameof(TokenID)}           Defines the InfluxDB token ID needed for server authentication");
             Console.WriteLine($"  -p, --{nameof(PointBucket)}       Defines the InfluxDB point bucket");
