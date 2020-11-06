@@ -32,19 +32,19 @@ namespace STTP2HIDS
     {
         private ulong m_processCount;
 
-        public Action<string> HandleStatusMessage { get; set; } = default!;
+        public Action<string>? HandleStatusMessage { get; set; }
 
-        public Action<string> HandleErrorMessage { get; set; } = default!;
+        public Action<string>? HandleErrorMessage { get; set; }
 
-        public Action<Dictionary<Guid, string>> HandleReceivedMetadata { get; set; } = default!;
+        public Action<Dictionary<Guid, string>>? HandleReceivedMetadata { get; set; }
 
-        public Action<Measurement> HandleReceivedMeasurement { get; set; } = default!;
+        public Action<Measurement>? HandleReceivedMeasurement { get; set; }
 
         protected override void StatusMessage(string message) => 
-            HandleStatusMessage($"[sttp] {message}");
+            HandleStatusMessage?.Invoke($"[sttp] {message}");
 
         protected override void ErrorMessage(string message) =>
-            HandleErrorMessage($"[sttp] ERROR: {message}");
+            HandleErrorMessage?.Invoke($"[sttp] ERROR: {message}");
 
         protected override void DataStartTime(DateTime startTime)
         {
