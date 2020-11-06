@@ -30,7 +30,9 @@ namespace STTP2HIDS
 {
     public class SubscriberHandler : SubscriberInstance
     {
-        private ulong m_processCount;
+        private long m_lastDisplayTime;
+
+        public long DisplayInterval { get; set; }
 
         public Action<string>? HandleStatusMessage { get; set; }
 
@@ -80,19 +82,16 @@ namespace STTP2HIDS
 
         public override unsafe void ReceivedNewMeasurements(Measurement* measurements, int length)
         {
-            const ulong interval = 10 * 60;
-            ulong measurementCount = (ulong)length;
-            bool showMessage = m_processCount + measurementCount >= (m_processCount / interval + 1) * interval;
-
-            m_processCount += measurementCount;
-
             // Process received measurements
             for (int i = 0; i < length; i++)
                 HandleReceivedMeasurement?.Invoke(measurements[i]);
 
             // Only display messages every few seconds
-            if (showMessage)
+            if (DateTime.UtcNow.Ticks - m_lastDisplayTime > DisplayInterval)
+            {
+                m_lastDisplayTime = DateTime.UtcNow.Ticks;
                 StatusMessage($"{GetTotalMeasurementsReceived():N0} measurements processed so far...");
+            }
         }
 
         protected override void ConfigurationChanged() =>
