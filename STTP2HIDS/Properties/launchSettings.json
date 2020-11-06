@@ -2,7 +2,7 @@
   "profiles": {
     "STTP2HIDS": {
       "commandName": "Project",
-      "commandLineArgs": "-t=28ExEMkCA8qZEyvrQEK4cnPC0cxrJo2iM2tAI8HIjwst504yq-3HSkjDZYCVO0zOrfmmzEbvQzOgiYLqEP9QnA== localhost:7175 localhost:8086"
+      "commandLineArgs": "-t=28ExEMkCA8qZEyvrQEK4cnPC0cxrJo2iM2tAI8HIjwst504yq-3HSkjDZYCVO0zOrfmmzEbvQzOgiYLqEP9QnA== -p=test_bucket localhost:7175 localhost:8086"
     }
   }
 }
