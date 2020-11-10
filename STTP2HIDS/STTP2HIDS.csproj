@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <LangVersion>9</LangVersion>
-	<Nullable>enable</Nullable>
+    <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
@@ -12,13 +12,13 @@
     <PackageReference Include="Gemstone.Common" Version="1.0.63" />
     <PackageReference Include="Gemstone.Configuration" Version="1.0.63" />
     <PackageReference Include="Gemstone.Threading" Version="1.0.63" />
-	<PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.6" />
-	<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.6" />
-	<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.1.6" />
-	<PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="3.1.6" />
-	<PackageReference Include="sttp.net" Version="1.0.9">
-	  <ExcludeAssets>native</ExcludeAssets>
-	</PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="3.1.6" />
+    <PackageReference Include="sttp.net" Version="1.0.9">
+      <ExcludeAssets>native</ExcludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
